@@ -1,9 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from flask import current_app as app
 
-from app.extensions import db, bcrypt
+import os
+from werkzeug.utils import secure_filename
+
+from app import db, bcrypt, app
 from app.models import User
 
 class UserForm(FlaskForm):
@@ -28,4 +30,17 @@ class UserForm(FlaskForm):
         )
         db.session.add(user)
         db.session.commit()
+        return user
+
+class LoginForm(FlaskForm):
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    senha = PasswordField('Senha', validators=[DataRequired()])
+    btnSubmit = SubmitField('Entrar')
+
+    def login(self):
+        user = User.query.filter_by(email=self.email.data).first()
+        if not user:
+            raise ValidationError("Usuário não encontrado.")
+        if not bcrypt.check_password_hash(user.senha, self.senha.data.encode('utf-8')):
+            raise ValidationError("Senha incorreta.")
         return user

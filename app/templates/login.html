@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+    <div id="corpo_login" class="container mt-5">
+        {% if current_user.is_authenticated %}
+            <script>
+                window.location.href = "{{ url_for('home', id=user_id) }}";
+            </script>
+        {% else %}
+            <form action="" method="post" class="row mt-2 p-4 rounded border shadow">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.senha.label(class="form-label") }}
+                    {{ form.senha(class="form-control") }}
+                </div>
+
+                {{ form.btnSubmit(class="btn btn-primary col-12 mt-3") }}
+
+                <div class="mt-2">
+                    Não tem cadastro? <a href="{{ url_for('cadastro') }}">Cadastre-se</a>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
+
+

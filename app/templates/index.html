@@ -2,12 +2,16 @@
 
 {% block content %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
     <!-- Cabeçalho-->
     <header class="row justify-content-between align-items-center mt-4 p-3 rounded">
         <h3 class="text-info">Social <span><img src="static/favicon/favicon-32x32.png" alt=""></span> Commerce</h3>
         <div>
-            <a href=""><button class="btn btn-info">Login</button></a>
-            <a href=""><button class="btn btn-info">Cadastre-se</button></a>
+            <a href="{{url_for('login')}}"><button class="btn btn-info">Login</button></a>
+            <a href="{{url_for('cadastro')}}"><button class="btn btn-info">Cadastre-se</button></a>
         </div>
     </header>
 

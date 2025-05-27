@@ -2,32 +2,37 @@
 
 {% block content %}
 
-<div class="container">
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+{% endblock %}
 
-    <div class="row col-9 mt-4">
-        <h3>Cadastro de Usuario</h3>
+    <div id="corpo_cadastro" class="container">
+
+        <div class="row col-9 mt-4">
+            <h3>Cadastro de Usuario</h3>
+        </div>
+        <form action="" method="post" class="row mt-2 p-4 rounded border shadow">
+            {{form.csrf_token}}
+
+            {{form.nome.label()}}
+            {{form.nome(class="form-control", placeholder="Digite seu nome")}}
+
+            {{form.sobreNome.label()}}
+            {{form.sobreNome(class="form-control", placeholder="Digite seu sobre nome")}}
+            
+            {{form.email.label()}}
+            {{form.email(class="form-control", placeholder="Digite seu e-mail")}}
+            
+            {{form.senha.label()}}
+            {{form.senha(class="form-control", placeholder="Escolha uma senha")}}
+            
+            {{form.confirme_senha.label()}}
+            {{form.confirme_senha(class="form-control", placeholder="Confirme sua senha")}}
+            
+            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}} 
+        </form>
     </div>
-    <form action="" method="post" class="row mt-2 p-4 rounded border shadow">
-        {{form.csrf_token}}
-
-        {{form.nome.label()}}
-        {{form.nome(class="form-control")}}
-
-        {{form.sobreNome.label()}}
-        {{form.sobreNome(class="form-control")}}
-        
-        {{form.email.label()}}
-        {{form.email(class="form-control")}}
-        
-        {{form.senha.label()}}
-        {{form.senha(class="form-control")}}
-        
-        {{form.confirme_senha.label()}}
-        {{form.confirme_senha(class="form-control")}}
-        
-        {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}} 
-    </form>
-</div>
 
 
 {% endblock %}
