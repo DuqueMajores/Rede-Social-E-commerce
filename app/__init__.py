@@ -1,20 +1,31 @@
-from  flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_bcrypt import Bcrypt
+from flask import Flask
 from dotenv import load_dotenv
-
 import os
+
+from app.extensions import db, migrate, bcrypt, login_manager
+from app.models import User
+
 load_dotenv('.env')
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['UPLOAD_FILES'] = r'static/data'
+def create_app():
+    app = Flask(__name__)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-bcrypt = Bcrypt(app)
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['UPLOAD_FILES'] = r'static/data'
 
-from app.views import index
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+
+    login_manager.login_view = 'login'
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    with app.app_context():
+        from app import views
+        return app
