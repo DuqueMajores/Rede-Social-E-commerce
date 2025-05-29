@@ -1,7 +1,148 @@
-#corpo_home{
-    height: 100vh;
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: auto;
 }
 
-.h1_home{
-    color: red;
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #1c1e21;
 }
+
+#corpo_home {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    height: 100%;
+}
+
+/* Header */
+#header_home {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#header_home img.rounded-circle {
+    width: 100px;
+    object-fit: cover;
+}
+
+#header_home h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+#header_home p {
+    color: #65676b;
+}
+
+/* Navigation */
+#header_home nav div {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+#header_home nav a {
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+#header_home nav a img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Formulário de pesquisa */
+#form_pesq_home {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+#form_pesq_home input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+}
+
+#form_pesq_home button {
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+#form_pesq_home button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Feed ou conteúdo */
+#nolt_home {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#nolt_home p {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+/* Scroll customizado */
+#nolt_home::-webkit-scrollbar {
+    width: 6px;
+}
+
+#nolt_home::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#nolt_home::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
+
+
+#corpo_home nav a {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #004c5c;
+    background-color: transparent;
+    transition: all 0.25s ease-in-out;
+    text-decoration: none;
+    position: relative;
+}
+
+#corpo_home nav a:hover {
+    background-color: #cceff6;
+    color: #002d36;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+

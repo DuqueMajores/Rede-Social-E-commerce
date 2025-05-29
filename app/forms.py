@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, PasswordField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
@@ -9,6 +10,7 @@ from app import db, bcrypt, app
 from app.models import User
 
 class UserForm(FlaskForm):
+    imagem = FileField('Foto de Perfil', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Apenas imagens são permitidas')])
     nome = StringField('Nome', validators=[DataRequired()])
     sobreNome = StringField('Sobrenome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])

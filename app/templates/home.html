@@ -8,10 +8,69 @@
 {% block content %}
     <div id="corpo_home">
         <header id="header_home" class="mt-4">
-            <h1 class="success-title h1_home">Cadastro realizado com sucesso!</h1>
-            <h2>Bem-vindo, {{ obj.nome }}</h2>
-            <p>Email: {{ obj.email }}</p>
-            <a href="{{ url_for('logout') }}" class="btn btn-danger">Sair</a>
+            <div class="d-flex justify-content-start align-items-center">
+                <div>
+                    <img class="rounded rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
+                </div>
+                <div class="m-4">
+                    <h2>{{ obj.nome }} {{ obj.sobreNome }}</h2>
+                    <p>{{ obj.email }}</p>
+                </div>
+            </div>
+            <nav class="">
+                <div>
+                    <a href="" class="">Seguir</a>
+                    <a href="" class="">Seguidores</a>
+                    <a href="" class="">Seguindo</a>
+                    <a href="" class="">Seus Produtos</a>
+                    <a href="" class="">Favoritos</a>
+                    <a href="" class="">Carteira</a>
+                    <a href="" class=""><img src="{{url_for('static', filename='img/config.png')}}" alt="config"></a>
+                    <a href="{{ url_for('logout') }}" class="">Sair</a>
+                </div>
+            </nav>
         </header>
+
+        <form id="form_pesq_home" method="get" class="row col-12 mt-4">
+            <div class="col-10">
+                <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Usuario, produtos, grupos">
+            </div>
+            <div class="row col-2">
+                <button type="submit" class="btn btn-warning"><img src="{{url_for('static', filename='img/pesquisar.png')}}" alt="">'</button>
+            </div>
+        </form>
+
+        <div id="nolt_home">
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+            <p>lorem</p>
+        </div>
     </div>
 {% endblock %}

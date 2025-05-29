@@ -5,13 +5,15 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import UserForm, LoginForm
 from app.models import User
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
+import os
+import uuid
 
 ### INDEX
 @app.route("/")
 def index():
-    """
-    APAGA O BANCO DE DADOS
-    usuario = User.query.get(1)  # Substitua 1 pelo ID desejado
+
+    """usuario = User.query.get(1)  # Substitua 1 pelo ID desejado
 
     if usuario:
         db.session.delete(usuario)
@@ -19,6 +21,7 @@ def index():
         print("Usuário excluído com sucesso.")
     else:
         print("Usuário não encontrado.")"""
+
     return render_template('index.html')
 
 ### HOME
@@ -34,23 +37,44 @@ def cadastro():
     form = UserForm()
 
     if form.validate_on_submit():
+        arquivo_imagem = form.imagem.data
         nome = form.nome.data
         sobreNome = form.sobreNome.data
         email = form.email.data
-        senha = generate_password_hash(form.senha.data)  # <-- Aqui você faz o hash
-        novo_usuario = User(nome=nome, sobreNome=sobreNome, email=email, senha=senha)
+        senha = generate_password_hash(form.senha.data)
+
+        if arquivo_imagem and arquivo_imagem.filename != '':
+            extensao = os.path.splitext(arquivo_imagem.filename)[1]
+            nome_arquivo = f"{uuid.uuid4().hex}{extensao}"  # Nome único para evitar conflito
+            caminho = os.path.join(app.root_path, 'static/imagens', nome_arquivo)
+            arquivo_imagem.save(caminho)
+        else:
+            nome_arquivo = 'default.png'
+
+        novo_usuario = User(
+            imagem=nome_arquivo,
+            nome=nome,
+            sobreNome=sobreNome,
+            email=email,
+            senha=senha
+        )
 
         db.session.add(novo_usuario)
         db.session.commit()
-        
+
         flash('Cadastro realizado com sucesso!', 'success')
         return redirect(url_for('login'))
 
     return render_template('cadastro.html', form=form)
 
+
+
 ### LOGIN
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home', id=current_user.id))
+
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -60,7 +84,7 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and check_password_hash(user.senha, senha):
-            login_user(user)  # Requer Flask-Login
+            login_user(user)
             return redirect(url_for('home', id=user.id))
         else:
             flash('E-mail ou senha inválidos.', 'danger')

@@ -8,11 +8,6 @@
 {% endblock %}
 
     <div id="corpo_login" class="container mt-5">
-        {% if current_user.is_authenticated %}
-            <script>
-                window.location.href = "{{ url_for('home', id=user_id) }}";
-            </script>
-        {% else %}
             <form action="" method="post" class="row mt-2 p-4 rounded border shadow">
                 {{ form.hidden_tag() }}
 
@@ -32,7 +27,7 @@
                     Não tem cadastro? <a href="{{ url_for('cadastro') }}">Cadastre-se</a>
                 </div>
             </form>
-        {% endif %}
+
     </div>
 {% endblock %}
 
