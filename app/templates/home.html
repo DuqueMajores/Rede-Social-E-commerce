@@ -8,7 +8,7 @@
 {% block content %}
     <div id="corpo_home">
         <header id="header_home" class="mt-4">
-            <div class="d-flex justify-content-start align-items-center">
+            <div id="cabecalho" class="">
                 <div>
                     <img class="rounded rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
                 </div>
@@ -22,55 +22,42 @@
                     <a href="" class="">Seguir</a>
                     <a href="" class="">Seguidores</a>
                     <a href="" class="">Seguindo</a>
-                    <a href="" class="">Seus Produtos</a>
+                    <a href="" class="">Produtos</a>
                     <a href="" class="">Favoritos</a>
-                    <a href="" class="">Carteira</a>
-                    <a href="" class=""><img src="{{url_for('static', filename='img/config.png')}}" alt="config"></a>
-                    <a href="{{ url_for('logout') }}" class="">Sair</a>
+                    {% if obj.id == current_user.id %}
+                        <a href="" class="">Carteira</a>
+                        <a href="" class=""><img src="{{url_for('static', filename='img/config.png')}}" alt="config"></a>
+                        <a href="{{ url_for('logout') }}" class="">Sair</a>
+                    {% endif %}
                 </div>
             </nav>
         </header>
 
         <form id="form_pesq_home" method="get" class="row col-12 mt-4">
-            <div class="col-10">
-                <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Usuario, produtos, grupos">
-            </div>
-            <div class="row col-2">
-                <button type="submit" class="btn btn-warning"><img src="{{url_for('static', filename='img/pesquisar.png')}}" alt="">'</button>
-            </div>
+            <div class="col-12">
+                <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Pesquisar...">
+            </div> 
         </form>
 
-        <div id="nolt_home">
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
-            <p>lorem</p>
+        <div id="nolt_home" class="container-fluid">
+            {% if context['dados']|length == 0 %}
+                <p>Nenhum resultado encontrado.</p>
+            {% else %}
+                {% for linha in context['dados'] %}
+                    <div id="perfis_nolt_home" class="">
+                        <div id="pnh_conteudo" class="">
+                            <div>
+                                <img class="rounded rounded-circle" src="{{ url_for('static', filename='imagens/' + linha.imagem) }}" alt="Foto Perfil">
+                            </div>
+                            <div class="m-4">
+                                <h2 class="m-2">{{ linha.nome }} {{ linha.sobreNome }}</h2>
+                                <p>{{ linha.email }}</p>
+                            </div>
+                        </div>
+                        <a class="btn btn-info" href="{{ url_for('home', id=linha.id) }}">Perfil</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

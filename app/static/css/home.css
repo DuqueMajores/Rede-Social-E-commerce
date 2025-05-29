@@ -30,9 +30,15 @@ body {
     gap: 10px;
 }
 
+#cabecalho{
+    display: flex;
+    align-items: center;
+}
+
 #header_home img.rounded-circle {
     width: 100px;
     object-fit: cover;
+    
 }
 
 #header_home h2 {
@@ -97,6 +103,7 @@ body {
 
 /* Feed ou conteúdo */
 #nolt_home {
+    margin: auto;
     margin-top: 30px;
     padding: 20px;
     background-color: #fff;
@@ -104,6 +111,10 @@ body {
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     max-height: 500px;
     overflow-y: auto;
+    display: flex;
+    justify-content: start;
+    align-items: stretch;
+    flex-direction: column;
 }
 
 #nolt_home p {
@@ -126,6 +137,22 @@ body {
     border-radius: 3px;
 }
 
+#nolt_home img{
+    width: 80px;
+}
+#nolt_home h2{
+    text-align: start;
+    font-size: 1rem;
+}
+#nolt_home p{
+    text-align: start;
+    font-size: 0.8rem;
+}
+
+#nolt_home h2 + p{
+    margin-top: -15px;
+}
+
 
 #corpo_home nav a {
     display: inline-block;
@@ -146,3 +173,170 @@ body {
     transform: translateY(-1px);
 }
 
+#perfis_nolt_home{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: -20px;
+    margin-right: 30px;
+    width: auto;
+    margin-left: 40px;
+}
+
+
+#pnh_conteudo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+@media screen and (max-width: 760px){
+
+    #cabecalho{
+        display: flex;
+        flex-direction: column;
+    }
+
+    #header_home img.rounded-circle {
+        width: 120px;
+        object-fit: cover;
+
+    }
+    
+    #header_home h2 {
+        margin: 0 auto;
+        font-size: 22px;
+        font-weight: 600;
+    }
+    
+    #header_home p {
+        color: #65676b;
+    }
+    
+    /* Navigation */
+    #header_home nav div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        font-size: small;
+        margin-top: -30px;
+    }
+
+    #header_home nav a {
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    #header_home nav a img {
+        width: 15px;
+        height: 15px;
+        vertical-align: middle;
+    }
+
+    #form_pesq_home{
+        margin-right: 100px;
+    }
+
+    #nolt_home{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #perfis_nolt_home{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: -20px;
+        margin-right: 30px;
+        width: 340px;
+    }
+
+    #pnh_conteudo img{
+        width: 65px;
+    }
+    
+}
+
+@media screen and (max-width: 460px){
+    /* Feed ou conteúdo */
+    #nolt_home {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    #nolt_home p {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        font-size: 15px;
+    }
+
+    /* Scroll customizado */
+    #nolt_home::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #nolt_home::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    #nolt_home::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 3px;
+    }
+
+    #nolt_home img{
+        width: 55px;
+    }
+    #nolt_home h2{
+        text-align: start;
+        font-size: 0.8rem;
+    }
+    #nolt_home p{
+        text-align: start;
+        font-size: 0.6rem;
+    }
+
+    #nolt_home h2 + p{
+        margin-top: -15px;
+    }
+
+    #nolt_home a{
+        font-size: small;
+    }
+
+    #perfis_nolt_home{
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 15px;
+        width: auto;
+    }
+
+    #perfis_nolt_home a{
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        margin-right: -50px;
+        gap: 10px;
+    }
+
+
+    #pnh_conteudo{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: -20px;
+        width: 200px;
+    }
+}

@@ -29,7 +29,20 @@ def index():
 @login_required
 def home(id):
     obj = User.query.get_or_404(id)
-    return render_template('home.html', obj=obj)
+
+    pesquisa = request.args.get('pesquisa', '')
+
+    if pesquisa:
+        dados = User.query.filter(User.nome.ilike(f'%{pesquisa}%')).order_by(User.nome)
+    else:
+        dados = User.query.order_by(User.nome)
+
+    pessoas = User.query.all()
+    quantidade = len(pessoas)
+
+    context = {'dados': dados.all()}
+
+    return render_template('home.html', obj=obj, context=context, pessoas=pessoas, quantidade=quantidade, user_id=id)
 
 ### CADASTRO
 @app.route('/cadastro', methods=['GET', 'POST'])
