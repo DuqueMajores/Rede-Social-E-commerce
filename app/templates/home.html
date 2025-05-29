@@ -24,9 +24,11 @@
                     <a href="" class="">Seguindo</a>
                     <a href="" class="">Produtos</a>
                     <a href="" class="">Favoritos</a>
+                    <a href="" class="">Grupos</a>
+                    <a href="" class="">Mensagem</a>
                     {% if obj.id == current_user.id %}
                         <a href="" class="">Carteira</a>
-                        <a href="" class=""><img src="{{url_for('static', filename='img/config.png')}}" alt="config"></a>
+                        <a href="" class="">Config.</a>
                         <a href="{{ url_for('logout') }}" class="">Sair</a>
                     {% endif %}
                 </div>

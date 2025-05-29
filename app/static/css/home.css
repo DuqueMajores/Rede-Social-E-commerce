@@ -33,6 +33,7 @@ body {
 #cabecalho{
     display: flex;
     align-items: center;
+
 }
 
 #header_home img.rounded-circle {
