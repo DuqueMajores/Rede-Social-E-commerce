@@ -8,6 +8,11 @@
 {% block content %}
     <div id="corpo_home">
         <header id="header_home" class="mt-4">
+            {% if obj.id == current_user.id %}
+            <div id="pin">
+                <a id="pin_btn" title="Notificações">✉️</a>
+            </div>       
+            {% endif %}
             <div id="cabecalho">
                 <div>
                     <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
@@ -41,7 +46,7 @@
                     {% if obj.id == current_user.id %}
                         <a href="#">Carteira</a>
                         <a href="#">Configurações</a>
-                        <a href="{{ url_for('logout') }}">Sair</a>
+                        <a id="a_out" href="{{ url_for('logout') }}">Sair</a>
                     {% endif %}
                 </div>
             </nav>

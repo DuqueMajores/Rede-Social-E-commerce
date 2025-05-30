@@ -1,0 +1,51 @@
+#corpo_seguindo{
+    height: 100vh;
+}
+
+#img_seguindo_1{
+    width: 120px;
+    margin-right: 20px;
+    margin-left: 15px;
+}
+
+#card_conteudo_seguindo{
+    margin: 0 auto;
+}
+
+#info_seguindo{
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 760px){
+    #img_seguindo_1{
+        width: 120px;
+        margin-left: 15px;
+    }
+    
+    #titulo_seguindo{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+@media screen and (max-width: 460px){
+    #img_seguindo_1{
+        width: 80px;
+        margin-left: 10px;
+    }
+    
+    #titulo_seguindo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    #titulo_seguindo h3{
+        font-size: 1.3rem;
+        margin-top: 30px;
+    }
+
+    #titulo_seguindo p{
+        font-size: 0.9rem;
+    }
+}

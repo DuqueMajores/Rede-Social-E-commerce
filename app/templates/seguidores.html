@@ -6,39 +6,46 @@
 {% endblock %}
 
 {% block content %}
-<div id="corpo_seguidores" class="container mt-4">
+<div id="corpo_seguidores" class="container mt-5">
+    
     <h2>Seguidores de {{ usuario.nome }} {{ usuario.sobreNome }}</h2>
 
     {% if not seguidores %}
-    <p>Este usuário ainda não possui seguidores.</p>
+        <p>Este usuário ainda não possui seguidores.</p>
     {% else %}
-    {% for seguidor in seguidores %}
-    <div class="card mb-3 p-3 d-flex flex-row align-items-center justify-content-between mt-5">
-        <div class="d-flex align-items-center">
-            <img class="rounded-circle me-3" src="{{ url_for('static', filename='imagens/' + seguidor.imagem) }}"
-                alt="Foto Perfil" width="50" height="50">
-            <div>
-                <h5 class="mb-0">{{ seguidor.nome }} {{ seguidor.sobreNome }}</h5>
-                <small>{{ seguidor.email }}</small>
+        {% for seguidor in seguidores %}
+        <div class="container mb-3 p-3 d-flex flex-row align-items-center justify-content-between">
+            <div id="info_card_seguidores" class="d-flex align-items-center">
+                <img 
+                    class="rounded-circle me-3" 
+                    src="{{ url_for('static', filename='imagens/' + seguidor.imagem) }}"
+                    alt="Foto de perfil"
+                    width="50" 
+                    height="50"
+                >
+                <div id="info_seguidores">
+                    <h5 class="mb-0">{{ seguidor.nome }} {{ seguidor.sobreNome }}</h5>
+                    <p class="mb-0">{{ seguidor.email }}</p>
+                </div>
             </div>
-        </div>
 
-        {% if seguidor.id != current_user.id %}
-        {% if seguidor.id not in ids_que_eu_sigo %}
-        <!-- Se ainda não segue, mostra botão para seguir -->
-        <form action="{{ url_for('seguir_usuario', id=seguidor.id) }}" method="post">
-            <button type="submit" class="btn btn-success seguir-btn" data-id="{{ seguidor.id }}">Seguir</button>
-        </form>
-        {% else %}
-        <!-- Se já segue, mostra botão para ver perfil -->
-        <a href="{{ url_for('home', id=seguidor.id) }}" class="btn btn-outline-primary">Ver Perfil</a>
-        {% endif %}
-        {% endif %}
-    </div>
-    {% endfor %}
+            {% if seguidor.id != current_user.id %}
+                {% if seguidor.id not in ids_que_eu_sigo %}
+                    <!-- Botão para seguir -->
+                    <form action="{{ url_for('seguir_usuario', id=seguidor.id) }}" method="post">
+                        <button type="submit" class="btn btn-success seguir-btn" data-id="{{ seguidor.id }}">Seguir</button>
+                    </form>
+                {% else %}
+                    <!-- Botão para visualizar o perfil -->
+                    <a href="{{ url_for('home', id=seguidor.id) }}" class="btn btn-outline-primary">Ver Perfil</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <hr>
+        {% endfor %}
     {% endif %}
+
 </div>
 
-<script src="{{url_for('static', filename='js/seguidores.js')}}"></script>
-
+<script src="{{ url_for('static', filename='js/seguidores.js') }}"></script>
 {% endblock %}
