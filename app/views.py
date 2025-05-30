@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect, flash
+from flask import render_template, url_for, request, redirect, flash, jsonify
 from flask_login import login_required
 from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import UserForm, LoginForm
@@ -128,10 +128,77 @@ def follow(user_id):
 @login_required
 def unfollow(user_id):
     user = User.query.get_or_404(user_id)
-    if user == current_user:
-        flash('Você não pode desseguir a si mesmo.')
-        return redirect(url_for('home', id=user_id))
     current_user.unfollow(user)
     db.session.commit()
-    flash(f'Você não está mais seguindo {user.nome}.')
-    return redirect(url_for('home', id=user_id))
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'status': 'success'})  # resposta para AJAX
+    else:
+        return redirect(request.referrer or url_for('seguindo', id=current_user.id))
+
+### SEGUIDORES
+@app.route('/seguidores/<int:user_id>/', endpoint='seguidores')
+@login_required
+def seguidores(user_id):
+    usuario = User.query.get_or_404(user_id)
+    seguidores = usuario.seguidores  # lista de objetos de usuários
+    ids_que_eu_sigo = [u.id for u in current_user.seguindo]  # lista de IDs
+
+    return render_template('seguidores.html', 
+                           usuario=usuario, 
+                           seguidores=seguidores,
+                           ids_que_eu_sigo=ids_que_eu_sigo)
+
+### USUÁRIOS QUE ESTOU SEGUINDO
+@app.route('/seguindo/<int:id>/', endpoint='seguindo')
+@login_required
+def seguindo(id):
+    obj = User.query.get_or_404(id)
+
+    pesquisa = request.args.get('pesquisa', '')
+
+    # Pegando apenas os usuários que o obj está seguindo
+    seguindo_query = obj.seguindo
+    dados = [usuario for usuario in obj.seguindo if pesquisa.lower() in usuario.nome.lower()]
+
+    if pesquisa:
+        seguindo_filtrado = [user for user in seguindo_query if pesquisa.lower() in user.nome.lower()]
+    else:
+        seguindo_filtrado = seguindo_query
+
+    context = {
+        'dados': dados,
+        'usuario_atual_seguindo_ids': {u.id for u in current_user.seguindo}
+    }
+
+    return render_template('seguindo.html', obj=obj, context=context)
+
+###SEGUIR E DEIXAR DE SEGUIR
+@app.route('/seguir/<int:id>', methods=['POST'])
+@login_required
+def seguir_usuario(id):
+    usuario = User.query.get_or_404(id)
+    if usuario not in current_user.seguindo:
+        current_user.seguindo.append(usuario)
+        db.session.commit()
+    return jsonify({'status': 'seguido'})
+
+@app.route('/deixar_de_seguir/<int:id>', methods=['POST'])
+@login_required
+def deixar_de_seguir_usuario(id):
+    usuario = User.query.get_or_404(id)
+    if usuario in current_user.seguindo:
+        current_user.seguindo.remove(usuario)
+        db.session.commit()
+    return jsonify({'status': 'removido'})
+
+@app.route('/seguidores/<int:id_usuario>')
+@login_required
+def listar_seguidores(id_usuario):
+    usuario = User.query.get_or_404(id_usuario)
+    seguidores = usuario.seguidores
+
+    # Coleta os IDs dos usuários que o usuário logado segue
+    ids_que_eu_sigo = [u.id for u in current_user.seguindo]
+
+    return render_template('seguidores.html', usuario=usuario, seguidores=seguidores, ids_que_eu_sigo=ids_que_eu_sigo)

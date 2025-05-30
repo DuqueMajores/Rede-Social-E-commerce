@@ -74,6 +74,10 @@ body {
     cursor: pointer;
 }
 
+#header_home nav #a_home:hover{
+    background-color: yellow;
+}
+
 #header_home nav a img {
     width: 20px;
     height: 20px;

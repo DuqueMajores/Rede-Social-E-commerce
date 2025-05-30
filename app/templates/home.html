@@ -15,7 +15,7 @@
                 <div class="m-4">
                     <h2>{{ obj.nome }} {{ obj.sobreNome }}</h2>
                     <p>{{ obj.email }}</p>
-                    <p>{{ obj.follower_count() }} seguidores</p>
+                    <p>{{ obj.total_seguidores() }} seguidores</p>
                     {% if obj.id != current_user.id %}
                         <form action="{{ url_for('follow', user_id=obj.id) }}" method="post">
                             {% if not current_user.is_following(obj) %}
@@ -29,12 +29,15 @@
             </div>
             <nav>
                 <div>
-                    <a href="#">Seguidores</a>
-                    <a href="#">Seguindo</a>
+                    <a href="{{ url_for('seguidores', user_id=obj.id) }}">Seguidores</a>
+                    <a href="{{ url_for('seguindo', id=obj.id) }}">Seguindo</a>
                     <a href="#">Produtos</a>
                     <a href="#">Favoritos</a>
                     <a href="#">Grupos</a>
                     <a href="#">Mensagem</a>
+                    {% if obj.id != current_user.id %}
+                        <a id="a_home" href="{{ url_for('home', id=current_user.id) }}">Home</a>
+                    {% endif %}
                     {% if obj.id == current_user.id %}
                         <a href="#">Carteira</a>
                         <a href="#">Configurações</a>

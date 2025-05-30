@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-2">
+            <img class="img-fluid rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
+        </div>
+        <div class="col-md-10">
+            <h3>{{ obj.nome }} {{ obj.sobreNome }}</h3>
+            <p>{{ obj.email }}</p>
+            <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
+        </div>
+    </div>
+
+    <form method="get" class="mb-4">
+        <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar usuários seguidos..." value="{{ request.args.get('pesquisa', '') }}">
+    </form>
+
+    {% if not context.dados %}
+        <p>Nenhum usuário encontrado.</p>
+    {% else %}
+        <div class="row">
+            {% for usuario in context.dados %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <img src="{{ url_for('static', filename='imagens/' + usuario.imagem) }}" alt="Imagem do Usuário" class="rounded-circle me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-0">{{ usuario.nome }} {{ usuario.sobreNome }}</h5>
+                                <p class="card-text"><small>{{ usuario.email }}</small></p>
+                            </div>
+                        </div>
+                        {% if usuario.id != current_user.id %}
+                            <div class="card-footer text-center">
+                                <form class="follow-toggle-form" data-user-id="{{ usuario.id }}"
+                                    data-action="{% if usuario.id in context.usuario_atual_seguindo_ids %}deixar_de_seguir{% else %}seguir{% endif %}">
+                                    <button type="submit"
+                                            class="btn btn-sm {% if usuario.id in context.usuario_atual_seguindo_ids %}btn-danger{% else %}btn-primary{% endif %}">
+                                        {% if usuario.id in context.usuario_atual_seguindo_ids %}Deixar de seguir{% else %}Seguir{% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<script src="{{url_for('static', filename='js/seguindo.js')}}"></script>
+
+{% endblock %}
