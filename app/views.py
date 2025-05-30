@@ -110,3 +110,28 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+### SEGUIR
+@app.route('/follow/<int:user_id>', methods=['POST'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if user == current_user:
+        flash('Você não pode seguir a si mesmo.')
+        return redirect(url_for('home', id=user_id))
+    current_user.follow(user)
+    db.session.commit()
+    flash(f'Você está seguindo {user.nome}.')
+    return redirect(url_for('home', id=user_id))
+
+@app.route('/unfollow/<int:user_id>', methods=['POST'])
+@login_required
+def unfollow(user_id):
+    user = User.query.get_or_404(user_id)
+    if user == current_user:
+        flash('Você não pode desseguir a si mesmo.')
+        return redirect(url_for('home', id=user_id))
+    current_user.unfollow(user)
+    db.session.commit()
+    flash(f'Você não está mais seguindo {user.nome}.')
+    return redirect(url_for('home', id=user_id))

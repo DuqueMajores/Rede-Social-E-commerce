@@ -8,28 +8,37 @@
 {% block content %}
     <div id="corpo_home">
         <header id="header_home" class="mt-4">
-            <div id="cabecalho" class="">
+            <div id="cabecalho">
                 <div>
-                    <img class="rounded rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
+                    <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
                 </div>
                 <div class="m-4">
                     <h2>{{ obj.nome }} {{ obj.sobreNome }}</h2>
                     <p>{{ obj.email }}</p>
+                    <p>{{ obj.follower_count() }} seguidores</p>
+                    {% if obj.id != current_user.id %}
+                        <form action="{{ url_for('follow', user_id=obj.id) }}" method="post">
+                            {% if not current_user.is_following(obj) %}
+                                <button type="submit" class="btn btn-primary">Seguir</button>
+                            {% else %}
+                                <button type="submit" formaction="{{ url_for('unfollow', user_id=obj.id) }}" class="btn btn-secondary">Desseguir</button>
+                            {% endif %}
+                        </form>
+                    {% endif %}
                 </div>
             </div>
-            <nav class="">
+            <nav>
                 <div>
-                    <a href="" class="">Seguir</a>
-                    <a href="" class="">Seguidores</a>
-                    <a href="" class="">Seguindo</a>
-                    <a href="" class="">Produtos</a>
-                    <a href="" class="">Favoritos</a>
-                    <a href="" class="">Grupos</a>
-                    <a href="" class="">Mensagem</a>
+                    <a href="#">Seguidores</a>
+                    <a href="#">Seguindo</a>
+                    <a href="#">Produtos</a>
+                    <a href="#">Favoritos</a>
+                    <a href="#">Grupos</a>
+                    <a href="#">Mensagem</a>
                     {% if obj.id == current_user.id %}
-                        <a href="" class="">Carteira</a>
-                        <a href="" class="">Config.</a>
-                        <a href="{{ url_for('logout') }}" class="">Sair</a>
+                        <a href="#">Carteira</a>
+                        <a href="#">Configurações</a>
+                        <a href="{{ url_for('logout') }}">Sair</a>
                     {% endif %}
                 </div>
             </nav>
@@ -42,14 +51,14 @@
         </form>
 
         <div id="nolt_home" class="container-fluid">
-            {% if context['dados']|length == 0 %}
+            {% if not context.dados %}
                 <p>Nenhum resultado encontrado.</p>
             {% else %}
-                {% for linha in context['dados'] %}
-                    <div id="perfis_nolt_home" class="">
-                        <div id="pnh_conteudo" class="">
+                {% for linha in context.dados %}
+                    <div id="perfis_nolt_home">
+                        <div id="pnh_conteudo">
                             <div>
-                                <img class="rounded rounded-circle" src="{{ url_for('static', filename='imagens/' + linha.imagem) }}" alt="Foto Perfil">
+                                <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + linha.imagem) }}" alt="Foto Perfil">
                             </div>
                             <div class="m-4">
                                 <h2 class="m-2">{{ linha.nome }} {{ linha.sobreNome }}</h2>

@@ -36,8 +36,12 @@ body {
 
 }
 
+#cabecalho form button{
+    font-size: 0.6rem;
+}
+
 #header_home img.rounded-circle {
-    width: 100px;
+    width: 140px;
     object-fit: cover;
     
 }
@@ -52,6 +56,10 @@ body {
     color: #65676b;
 }
 
+#header_home nav button img{
+    width: 30px;
+}
+
 /* Navigation */
 #header_home nav div {
     display: flex;
@@ -63,6 +71,7 @@ body {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
+    cursor: pointer;
 }
 
 #header_home nav a img {
@@ -197,6 +206,7 @@ body {
     #cabecalho{
         display: flex;
         flex-direction: column;
+        text-align: center;
     }
 
     #header_home img.rounded-circle {
