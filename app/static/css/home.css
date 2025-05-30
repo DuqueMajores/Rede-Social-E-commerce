@@ -225,6 +225,10 @@ body {
     #header_home p {
         color: #65676b;
     }
+
+    #header_home nav{
+        margin-top: 10px;
+    }
     
     /* Navigation */
     #header_home nav div {
@@ -276,6 +280,7 @@ body {
 }
 
 @media screen and (max-width: 460px){
+
     /* Feed ou conteúdo */
     #nolt_home {
         margin-top: 30px;
