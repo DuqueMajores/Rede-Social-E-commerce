@@ -27,7 +27,7 @@
         {% if seguidor.id not in ids_que_eu_sigo %}
         <!-- Se ainda não segue, mostra botão para seguir -->
         <form action="{{ url_for('seguir_usuario', id=seguidor.id) }}" method="post">
-            <button class="btn btn-success seguir-btn" data-id="{{ seguidor.id }}">Seguir</button>
+            <button type="submit" class="btn btn-success seguir-btn" data-id="{{ seguidor.id }}">Seguir</button>
         </form>
         {% else %}
         <!-- Se já segue, mostra botão para ver perfil -->
