@@ -13,11 +13,11 @@ class User(UserMixin, db.Model):
     nome = db.Column(db.String(150))
     sobreNome = db.Column(db.String(150))
     status = db.Column(db.String(150))
-    cpf_cnpj = db.Column(db.String(150), unique=True)
+    cpf_cnpj = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(150), unique=True)
     senha = db.Column(db.String(150))
     imagem = db.Column(db.String(150), default='default.png')
-    cor_fundo = db.Column(db.String(20), default='#ffffff')  # padrão: branco
+    cor_fundo = db.Column(db.String(255), default='background-image: linear-gradient(to right, #fff, #a6e3ed);')
     notificacoes = db.relationship('Notificacao', backref='usuario', lazy='dynamic')
 
     # Usuários que este usuário segue

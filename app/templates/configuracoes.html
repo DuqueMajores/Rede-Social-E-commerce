@@ -8,7 +8,12 @@
 
 {% block content %}
 
-    <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
+    <div id="header_config">
+        <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
+        <form method="POST" action="{{ url_for('excluir_conta', id=obj.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível.')">
+            <button class="btn btn-danger" type="submit">Excluir Conta</button>
+        </form>
+    </div>
 
     <div id="corpo_config" class="mt-4">
         <h2>Configurações da Conta</h2>
@@ -30,11 +35,12 @@
             {{ form.imagem.label }} {{ form.imagem(class="form-control-file") }}
             </div>
             <div class="form-group">
-            {{ form.cor_fundo.label }} {{ form.cor_fundo(class="form-control", placeholder="#ffffff ou deixe em branco para cores originais") }}
+            {{ form.cor_fundo.label }} {{ form.cor_fundo(class="form-control")}}
             </div>
             <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
         </form>
     </div>
 
+    <script src="{{url_for('static', filename='js/configuracoes.js')}}"></script>
 {% endblock %}
 

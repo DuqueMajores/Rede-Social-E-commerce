@@ -13,30 +13,9 @@ import time
 from sqlalchemy import or_
 
 ### INDEX
-@app.route("/")
+@app.route('/')
 def index():
-
-    """db.session.query(Notificacao).delete()
-    db.session.commit()"""
-
-    """# Busca o usuário pelo e-mail
-    user = User.query.filter_by(email="duque.majores@gmail.com").first()
-
-    if user:
-        user.status = "CEO & CTO da Social E-Commerce"
-        user.cpf_cnpj = "17324412785"
-        db.session.commit()
-        print("Usuário atualizado com sucesso.")
-        db.session.add(user)
-        db.session.commit()
-    else:
-        print("Usuário não encontrado.")"""
-
-    obj = {
-        'cor_fundo': "linear-gradient(to right, #fff, #a6e3ed)"  # Cor original
-    }
-
-    return render_template('index.html', obj=obj)
+    return render_template('index.html')
 
 ### HOME
 @app.route('/home/<int:id>/', endpoint='home')
@@ -103,7 +82,7 @@ def cadastro():
         email = form.email.data
         senha = generate_password_hash(form.senha.data)
         status = form.status.data
-        cfp_cnpj = form.cpf_cnpj.data
+        cpf_cnpj = form.cpf_cnpj.data
 
         if arquivo_imagem and arquivo_imagem.filename != '':
             extensao = os.path.splitext(arquivo_imagem.filename)[1]
@@ -120,7 +99,7 @@ def cadastro():
             email=email,
             senha=senha,
             status=status,
-            cfp_cnpj = cfp_cnpj
+            cpf_cnpj = cpf_cnpj
         )
 
         db.session.add(novo_usuario)
@@ -381,3 +360,24 @@ def configuracoes():
         return redirect(url_for('configuracoes'))
 
     return render_template('configuracoes.html', form=form, obj=obj)
+
+
+###EXCLUIR CONTA
+@app.route('/excluir_conta/<int:id>/', methods=['POST'])
+@login_required
+def excluir_conta(id):
+    usuario = User.query.get_or_404(id)
+
+    # Caminho da imagem
+    imagem_usuario = usuario.imagem
+    if imagem_usuario and imagem_usuario != 'default.png':
+        caminho_imagem = os.path.join(app.root_path, 'static/imagens', imagem_usuario)
+        if os.path.exists(caminho_imagem):
+            os.remove(caminho_imagem)
+
+    logout_user()  # Desloga o usuário antes de excluir
+    db.session.delete(usuario)
+    db.session.commit()
+
+    flash("Sua conta foi excluída com sucesso.", "success")
+    return redirect(url_for('index'))

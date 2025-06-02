@@ -300,6 +300,11 @@ body {
 
 }
 
+#pnh_conteudo img{
+    width: 80px;
+    height: 80px;
+}
+
 #icon_star_home{
     font-size:24px; 
     color: gold;
@@ -381,6 +386,7 @@ body {
 
     #pnh_conteudo img{
         width: 65px;
+        height: 65px;
     }
     
 }
@@ -461,5 +467,10 @@ body {
         justify-content: space-between;
         gap: -20px;
         width: 200px;
+    }
+
+    #pnh_conteudo img{
+        width: 45px;
+        height: 45px;
     }
 }

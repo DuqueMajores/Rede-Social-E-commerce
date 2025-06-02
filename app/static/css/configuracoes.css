@@ -2,6 +2,12 @@
     height: 100vh;
 }
 
+#header_config{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 :root {
     --bg-color: #f4f5f7;
     --primary-color: #007bff;
