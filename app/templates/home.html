@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-{% set fundo = obj.cor_fundo if obj.cor_fundo else 'linear-gradient(to right, #fff, #a6e3ed)' %}
-
 {% block styles %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
@@ -60,13 +59,11 @@
                 </div>
             </nav>
         </header>
-
         <form id="form_pesq_home" method="get" class="row col-12 mt-4">
             <div class="col-12">
                 <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Pesquisar...">
             </div>
         </form>
-
         <div id="nolt_home" class="container-fluid">
             {% if obj.id == current_user.id %}
             <div id="notificacoes_container">
@@ -103,15 +100,7 @@
             {% endif %}
         </div>
     </div>
-
     <script src="{{url_for('static', filename='js/home.js')}}"></script>
     <script src="{{url_for('static', filename='js/seguidores.js')}}"></script>
 
 {% endblock %}
-
-{% set classe_body = 'fundo-custom' if obj.cor_fundo else 'fundo-claro' %}
-<style>
-  :root {
-    --cor-fundo: {{ obj.cor_fundo }};
-  }
-</style>

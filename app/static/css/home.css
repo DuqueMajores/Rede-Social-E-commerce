@@ -6,14 +6,6 @@
     height: auto;
 }
 
-.fundo-claro {
-    background-image: linear-gradient(to right, #fff, #a6e3ed);
-  }
-  
-  .fundo-custom {
-    background-color: var(--cor-fundo);
-  }
-
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     height: 100vh;
@@ -221,7 +213,7 @@ body {
 /* Feed ou conteúdo */
 #nolt_home {
     margin: auto;
-    margin-top: 30px;
+    margin-top: 25px;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;

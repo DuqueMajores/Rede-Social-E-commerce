@@ -84,3 +84,5 @@ class ConfiguracoesForm(FlaskForm):
             foto.save(caminho_novo)
             return nome_arquivo
         return nome_arquivo_antigo
+
+    

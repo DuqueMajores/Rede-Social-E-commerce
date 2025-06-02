@@ -3,45 +3,45 @@
 {% block content %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
 {% endblock %}
 
-    <div id="corpo_cadastro" class="container">
+<div id="corpo_cadastro" class="container">
 
-        <div class="row col-9 mt-4">
-            <h3>Cadastro de Usuario</h3>
-        </div>
-        <form action="" method="post" enctype="multipart/form-data" class="row mt-2 p-4 rounded border shadow">
-            {{form.csrf_token}}
-            {{ form.hidden_tag() }}
-
-            {{form.imagem.label()}}
-            {{form.imagem(class="form-control", placeholder="Foto de perfil")}}
-
-            {{form.nome.label()}}
-            {{form.nome(class="form-control", placeholder="Digite seu nome")}}
-
-            {{form.sobreNome.label()}}
-            {{form.sobreNome(class="form-control", placeholder="Digite seu sobre nome")}}
-
-            {{form.status.label()}}
-            {{form.status(class="form-control", placeholder="Descreva em duas ou tres palavras sua profissao")}}
-
-            {{form.cpf_cnpj.label()}}
-            {{form.cpf_cnpj(class="form-control", placeholder="Digte seu CPF ou CNPJ")}}
-            
-            {{form.email.label()}}
-            {{form.email(class="form-control", placeholder="Digite seu e-mail")}}
-            
-            {{form.senha.label()}}
-            {{form.senha(class="form-control", placeholder="Escolha uma senha")}}
-            
-            {{form.confirme_senha.label()}}
-            {{form.confirme_senha(class="form-control", placeholder="Confirme sua senha")}}
-            
-            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}} 
-        </form>
+    <div class="row col-9 mt-4">
+        <h3>Cadastro de Usuario</h3>
     </div>
+    <form action="" method="post" enctype="multipart/form-data" class="row mt-2 p-4 rounded border shadow">
+        {{form.csrf_token}}
+        {{ form.hidden_tag() }}
+
+        {{form.imagem.label()}}
+        {{form.imagem(class="form-control", placeholder="Foto de perfil")}}
+
+        {{form.nome.label()}}
+        {{form.nome(class="form-control", placeholder="Digite seu nome")}}
+
+        {{form.sobreNome.label()}}
+        {{form.sobreNome(class="form-control", placeholder="Digite seu sobre nome")}}
+
+        {{form.status.label()}}
+        {{form.status(class="form-control", placeholder="Descreva em duas ou tres palavras sua profissao")}}
+
+        {{form.cpf_cnpj.label()}}
+        {{form.cpf_cnpj(class="form-control", placeholder="Digte seu CPF ou CNPJ")}}
+
+        {{form.email.label()}}
+        {{form.email(class="form-control", placeholder="Digite seu e-mail")}}
+
+        {{form.senha.label()}}
+        {{form.senha(class="form-control", placeholder="Escolha uma senha")}}
+
+        {{form.confirme_senha.label()}}
+        {{form.confirme_senha(class="form-control", placeholder="Confirme sua senha")}}
+
+        {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+    </form>
+</div>
 
 {% endblock %}

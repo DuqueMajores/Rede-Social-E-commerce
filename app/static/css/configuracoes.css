@@ -1,3 +1,92 @@
 #corpo_config{
     height: 100vh;
 }
+
+:root {
+    --bg-color: #f4f5f7;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --input-bg: #ffffff;
+    --border-radius: 12px;
+    --transition: 0.3s ease-in-out;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    background-color: var(--input-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 50px;
+    max-width: 700px;
+    margin: auto;
+    margin-top: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #222;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-control, .form-control-file {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control:focus, .form-control-file:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+.btn {
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    padding: 0.6rem 1.2rem;
+    transition: background-color var(--transition), color var(--transition), border var(--transition);
+}
+
+.btn-outline-secondary {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004a99;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 1.2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn, .form-control {
+        font-size: 0.95rem;
+    }
+}
+

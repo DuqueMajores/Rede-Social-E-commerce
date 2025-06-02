@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
 
-{% block content %}
-
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
-    <div class="container">
-        <!-- Cabeçalho-->
-        <header class="row justify-content-between align-items-center mt-4 p-3 rounded">
-            <h3 class="text-info">Social <span><img src="static/favicon/favicon-32x32.png" alt=""></span> Commerce</h3>
-            <div>
-                <a href="{{url_for('login')}}"><button class="btn btn-info">Login</button></a>
-                <a href="{{url_for('cadastro')}}"><button class="btn btn-info">Cadastre-se</button></a>
-            </div>
-        </header>
-        <hr>
-        <!-- Corpo -->
-        <main>
-            <div>
-                <h2 class="text-info">Cadastre-se</h2>
-                <h2 class="text-info">Conecte-se</h2>
-                <h2 class="text-info">Venda!</h2>
-                <p>A Social E-Commerce transforma cada usuário em um potencial vendedor, criando uma experiência social onde a comercialização de produtos é orgânica, engajada e altamente segmentada.</p>
-            </div>
-            <div>
-                <img src="static/img/commerce.png" alt="">
-            </div>
-        </main>
-    </div>
-
+{% block content %}
+<div class="container">
+    <!-- Cabeçalho-->
+    <header class="row justify-content-between align-items-center mt-4 p-3 rounded">
+        <h3 class="text-info">Social <span><img src="static/favicon/favicon-32x32.png" alt=""></span> Commerce</h3>
+        <div>
+            <a href="{{url_for('login')}}"><button class="btn btn-info">Login</button></a>
+            <a href="{{url_for('cadastro')}}"><button class="btn btn-info">Cadastre-se</button></a>
+        </div>
+    </header>
+    <hr>
+    <!-- Corpo -->
+    <main>
+        <div>
+            <h2 class="text-info">Cadastre-se</h2>
+            <h2 class="text-info">Conecte-se</h2>
+            <h2 class="text-info">Venda!</h2>
+            <p>A Social E-Commerce transforma cada usuário em um potencial vendedor, criando uma experiência social onde a comercialização de produtos é orgânica, engajada e altamente segmentada.</p>
+        </div>
+        <div>
+            <img src="static/img/commerce.png" alt="">
+        </div>
+    </main>
+</div>
 {% endblock %}

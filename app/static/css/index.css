@@ -3,13 +3,6 @@
     height: 100vh;
 }
 
-.fundo-claro {
-    background-image: linear-gradient(to right, #fff, #a6e3ed);
-  }
-  
-  .fundo-custom {
-    background-color: var(--cor-fundo);
-  }
 
 @media screen and (max-width: 760px){
     #body{

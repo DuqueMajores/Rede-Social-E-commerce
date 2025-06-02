@@ -67,9 +67,17 @@ def home(id):
     notificacoes = Notificacao.query.filter_by(user_id=obj.id, lida=False).all()
     tem_notificacao = bool(notificacoes)
 
+    # Se cor_fundo for None ou string vazia, aplicar o gradient padrão
+    if obj.cor_fundo is None or obj.cor_fundo.strip() == '':
+        fundo = "linear-gradient(to right, #fff, #a6e3ed)"
+    else:
+        fundo = obj.cor_fundo
+
+
     return render_template(
         'home.html',
         obj=obj,
+        fundo=fundo,
         context=context,
         pessoas=pessoas,
         quantidade=quantidade,

@@ -8,10 +8,11 @@
 
 {% block content %}
 
-    <div id="corpo_config" class="container mt-4">
-        <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
+    <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
+
+    <div id="corpo_config" class="mt-4">
         <h2>Configurações da Conta</h2>
-        <form class="container" method="POST" enctype="multipart/form-data">
+        <form class="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div class="form-group">
             {{ form.nome.label }} {{ form.nome(class="form-control") }}
@@ -36,3 +37,4 @@
     </div>
 
 {% endblock %}
+
