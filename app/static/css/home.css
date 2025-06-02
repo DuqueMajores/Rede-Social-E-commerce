@@ -6,10 +6,77 @@
     height: auto;
 }
 
+.fundo-claro {
+    background-image: linear-gradient(to right, #fff, #a6e3ed);
+  }
+  
+  .fundo-custom {
+    background-color: var(--cor-fundo);
+  }
+
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #1c1e21;
+    height: 100vh;
+}
+
+#notificacao{
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#notificacao:hover{
+    background-color: lightblue;
+}
+
+#status-indicador {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+/* Estado online (logado no próprio perfil) */
+#status-indicador.online {
+    background-color: green;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+#status-indicador.offline {
+    background-color: white;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+#pin_btn.notificado {
+    background-color: #138496;
+}
+
+#notificacoes_container {
+    display: none;
+    color: black;
+    display: flex;
+    align-items: center; /* Texto branco para contraste */
+
+}
+
+.notificado {
+    background-color: #138496;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center; 
+}
+
+#notificacao_home{
+    text-align: center;
 }
 
 #pin {
@@ -21,7 +88,7 @@ body {
     top: 10px;
     right: 10px;
     background-color: white;
-    color: #ffffff;
+    color: white;
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -72,6 +139,7 @@ body {
 
 #header_home img.rounded-circle {
     width: 140px;
+    height: 140px;
     object-fit: cover;
     
 }
@@ -240,6 +308,12 @@ body {
 
 }
 
+#icon_star_home{
+    font-size:24px; 
+    color: gold;
+    
+}
+
 @media screen and (max-width: 760px){
 
     #cabecalho{
@@ -250,6 +324,7 @@ body {
 
     #header_home img.rounded-circle {
         width: 120px;
+        height: 120px;
         object-fit: cover;
 
     }

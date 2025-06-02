@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loja.css') }}">
+{% endblock %}
+
+<header>
+    <div id="header_info_loja">
+      <h1>Loja Moderna</h1>
+      <div class="header-buttons">
+        <button>Perfil</button>
+        <button>Cadastrar Produto</button>
+        <button>Pedidos</button>
+        <button id="openCart">🛒 Carrinho</button>
+      </div>
+    </div>
+  
+    <form id="searchForm" action="">
+        <input type="search" name="search" id="search" placeholder="Buscar produto...">
+        <button type="submit">Buscar</button>
+      </form>
+  </header>
+  
+
+
+  <main id="products">
+    <!-- Produtos dinâmicos via JS -->
+  </main>
+
+  <aside id="cart" class="closed">
+    <h2>Carrinho</h2>
+    <ul id="cartItems"></ul>
+    <button id="closeCart">Fechar</button>
+  </aside>
+
+  <script src="{{url_for('static', filename='js/loja.js')}}"></script>
+
+{% endblock %}

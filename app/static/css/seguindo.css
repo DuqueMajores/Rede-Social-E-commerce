@@ -2,6 +2,40 @@
     height: 100vh;
 }
 
+#corpo_seguindo img{
+    width: 140px;
+    height: 140px;
+}
+
+.card-footer form a{
+    font-size: small;
+}
+
+#status-indicador {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+/* Estado online (logado no próprio perfil) */
+#status-indicador.online {
+    background-color: green;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+#status-indicador.offline {
+    background-color: white;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
 #img_seguindo_1{
     width: 120px;
     margin-right: 20px;
@@ -16,6 +50,11 @@
     margin-left: 20px;
 }
 
+#card_conteudo_seguindo img{
+    width: 80px;
+    height: 80px;
+}
+
 @media screen and (max-width: 760px){
     #img_seguindo_1{
         width: 120px;
@@ -25,6 +64,20 @@
     #titulo_seguindo{
         display: flex;
         flex-direction: row;
+    }
+
+    #corpo_seguindo{
+        height: 100vh;
+    }
+
+    #corpo_seguindo img{
+        width: 100px;
+        height: 100px;
+    }
+
+    #card_conteudo_seguindo img{
+        width: 85px;
+        height: 85px;
     }
 }
 
@@ -47,5 +100,10 @@
 
     #titulo_seguindo p{
         font-size: 0.9rem;
+    }
+
+    #card_conteudo_seguindo img{
+        width: 60px;
+        height: 60px;
     }
 }

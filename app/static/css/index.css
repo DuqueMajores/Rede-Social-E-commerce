@@ -1,10 +1,20 @@
 #body{
     background-image: linear-gradient(to right, #fff, #a6e3ed );
+    height: 100vh;
 }
+
+.fundo-claro {
+    background-image: linear-gradient(to right, #fff, #a6e3ed);
+  }
+  
+  .fundo-custom {
+    background-color: var(--cor-fundo);
+  }
 
 @media screen and (max-width: 760px){
     #body{
-        background-image: linear-gradient(to bottom, #fff, #a6e3ed );
+        background-image: linear-gradient(to bottom, hsl(0, 0%, 100%), #a6e3ed );
+        height: 100vh;
     }
 }
 
@@ -40,6 +50,10 @@
 }
 
 @media screen and (max-width: 760px){
+    #body{
+        height: 100vh;
+    }
+    
     .container main{
         display: flex;
         flex-wrap: wrap;

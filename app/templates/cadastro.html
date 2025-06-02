@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}Cadastro de Usuario SEC
 
 {% block content %}
 
@@ -24,6 +24,12 @@
 
             {{form.sobreNome.label()}}
             {{form.sobreNome(class="form-control", placeholder="Digite seu sobre nome")}}
+
+            {{form.status.label()}}
+            {{form.status(class="form-control", placeholder="Descreva em duas ou tres palavras sua profissao")}}
+
+            {{form.cpf_cnpj.label()}}
+            {{form.cpf_cnpj(class="form-control", placeholder="Digte seu CPF ou CNPJ")}}
             
             {{form.email.label()}}
             {{form.email(class="form-control", placeholder="Digite seu e-mail")}}
@@ -37,6 +43,5 @@
             {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}} 
         </form>
     </div>
-
 
 {% endblock %}

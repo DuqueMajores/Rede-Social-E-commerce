@@ -1,52 +1,61 @@
 {% extends 'base.html' %}
 
+{% set fundo = obj.cor_fundo if obj.cor_fundo else 'linear-gradient(to right, #fff, #a6e3ed)' %}
+
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div id="corpo_home">
+
+    <div id="corpo_home" class="container">
         <header id="header_home" class="mt-4">
             {% if obj.id == current_user.id %}
             <div id="pin">
-                <a id="pin_btn" title="Notificações">✉️</a>
-            </div>       
+                <a id="pin_btn" class="icone-notificacao {% if tem_notificacao %}notificado{% endif %}"
+                    title="Notificações">
+                    ✉️
+                </a>
+            </div>
             {% endif %}
+            <div id="status-indicador" class="{% if obj.is_online() %}online{% else %}offline{% endif %}"></div>
             <div id="cabecalho">
                 <div>
-                    <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
+                    <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}"
+                        alt="Foto Perfil">
                 </div>
                 <div class="m-4">
                     <h2>{{ obj.nome }} {{ obj.sobreNome }}</h2>
-                    <p>{{ obj.email }}</p>
+                    <p>{{ obj.status}}</p>
                     <p>{{ obj.total_seguidores() }} seguidores</p>
                     {% if obj.id != current_user.id %}
-                        <form action="{{ url_for('follow', user_id=obj.id) }}" method="post">
-                            {% if not current_user.is_following(obj) %}
-                                <button type="submit" class="btn btn-primary">Seguir</button>
-                            {% else %}
-                                <button type="submit" formaction="{{ url_for('unfollow', user_id=obj.id) }}" class="btn btn-secondary">Desseguir</button>
-                            {% endif %}
-                        </form>
+                    <form action="{{ url_for('follow', user_id=obj.id) }}" method="post">
+                        {% if not current_user.is_following(obj) %}
+                        <button type="submit" class="btn btn-primary">Seguir</button>
+                        {% else %}
+                        <button type="submit" formaction="{{ url_for('unfollow', user_id=obj.id) }}"
+                            class="btn btn-secondary">Desseguir</button>
+                        {% endif %}
+                    </form>
                     {% endif %}
                 </div>
             </div>
             <nav>
                 <div>
                     <a href="{{ url_for('seguidores', user_id=obj.id) }}">Seguidores</a>
-                    <a href="{{ url_for('seguindo', id=obj.id) }}">Seguindo</a>
-                    <a href="#">Produtos</a>
+                    <a href="{{ url_for('seguindo', id=obj.id) }}">Contatos</a>
+                    <a href="{{ url_for('loja') }}">Loja</a>
                     <a href="#">Favoritos</a>
                     <a href="#">Grupos</a>
                     <a href="#">Mensagem</a>
                     {% if obj.id != current_user.id %}
-                        <a id="a_home" href="{{ url_for('home', id=current_user.id) }}">Home</a>
+                    <a id="a_home" href="{{ url_for('home', id=current_user.id) }}">Home</a>
                     {% endif %}
                     {% if obj.id == current_user.id %}
-                        <a href="#">Carteira</a>
-                        <a href="#">Configurações</a>
-                        <a id="a_out" href="{{ url_for('logout') }}">Sair</a>
+                    <a href="#">Carteira</a>
+                    <a href="{{ url_for('configuracoes') }}">Configurações</a>
+                    <a id="a_out" href="{{ url_for('logout') }}">Sair</a>
                     {% endif %}
                 </div>
             </nav>
@@ -55,28 +64,54 @@
         <form id="form_pesq_home" method="get" class="row col-12 mt-4">
             <div class="col-12">
                 <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Pesquisar...">
-            </div> 
+            </div>
         </form>
 
         <div id="nolt_home" class="container-fluid">
-            {% if not context.dados %}
-                <p>Nenhum resultado encontrado.</p>
-            {% else %}
-                {% for linha in context.dados %}
-                    <div id="perfis_nolt_home">
-                        <div id="pnh_conteudo">
-                            <div>
-                                <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + linha.imagem) }}" alt="Foto Perfil">
-                            </div>
-                            <div class="m-4">
-                                <h2 class="m-2">{{ linha.nome }} {{ linha.sobreNome }}</h2>
-                                <p>{{ linha.email }}</p>
-                            </div>
-                        </div>
-                        <a class="btn btn-info" href="{{ url_for('home', id=linha.id) }}">Perfil</a>
-                    </div>
+            {% if obj.id == current_user.id %}
+            <div id="notificacoes_container">
+                {% for notificacao in notificacoes %}
+                <div id="notificacao" class="notificacao {% if not notificacao.lida %}nao-lida{% endif %}"
+                    data-id="{{ notificacao.id }}">
+                    <span class="icon_star_home">&#9733;</span>{{ notificacao.mensagem }}
+                </div>
+                {% else %}
+                <p>Não há notificações.</p>
                 {% endfor %}
+            </div>
+            {% endif %}
+            {% if context.busca %}
+            {% if not context.dados %}
+            <p>Nenhum resultado encontrado.</p>
+            {% else %}
+            {% for linha in context.dados %}
+            <div id="perfis_nolt_home">
+                <div id="pnh_conteudo">
+                    <div>
+                        <img class="rounded-circle" src="{{ url_for('static', filename='imagens/' + linha.imagem) }}"
+                            alt="Foto Perfil">
+                    </div>
+                    <div class="m-4">
+                        <h2 class="m-2">{{ linha.nome }} {{ linha.sobreNome }} </h2>
+                        <p>{{ linha.status }}</p>
+                    </div>
+                </div>
+                <a class="btn btn-info" href="{{ url_for('home', id=linha.id) }}">Perfil</a>
+            </div>
+            {% endfor %}
+            {% endif %}
             {% endif %}
         </div>
     </div>
+
+    <script src="{{url_for('static', filename='js/home.js')}}"></script>
+    <script src="{{url_for('static', filename='js/seguidores.js')}}"></script>
+
 {% endblock %}
+
+{% set classe_body = 'fundo-custom' if obj.cor_fundo else 'fundo-claro' %}
+<style>
+  :root {
+    --cor-fundo: {{ obj.cor_fundo }};
+  }
+</style>

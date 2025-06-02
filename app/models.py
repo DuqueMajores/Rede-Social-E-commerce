@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime, timedelta
 from flask_login import UserMixin
 
 # Tabela de associação (auto-relacionamento N:N)
@@ -11,9 +12,13 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(150))
     sobreNome = db.Column(db.String(150))
+    status = db.Column(db.String(150))
+    cpf_cnpj = db.Column(db.String(150), unique=True)
     email = db.Column(db.String(150), unique=True)
     senha = db.Column(db.String(150))
     imagem = db.Column(db.String(150), default='default.png')
+    cor_fundo = db.Column(db.String(20), default='#ffffff')  # padrão: branco
+    notificacoes = db.relationship('Notificacao', backref='usuario', lazy='dynamic')
 
     # Usuários que este usuário segue
     seguindo = db.relationship(
@@ -23,6 +28,11 @@ class User(UserMixin, db.Model):
         backref=db.backref('seguidores', lazy='dynamic'),
         lazy='dynamic'
     )
+
+    # Relacionamento com notificações
+    notificacoes = db.relationship('Notificacao', backref='dono', lazy='dynamic')
+
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def seguir(self, usuario):
         if not self.esta_seguindo(usuario):
@@ -49,3 +59,19 @@ class User(UserMixin, db.Model):
 
     def unfollow(self, usuario):
         self.deixar_de_seguir(usuario)
+
+    def is_online(self):
+        if self.last_seen is None:
+            return False
+        return datetime.utcnow() - self.last_seen < timedelta(minutes=0.10)
+
+
+class Notificacao(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    mensagem = db.Column(db.Text, nullable=False)
+    lida = db.Column(db.Boolean, default=False)
+    criada_em = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+

@@ -1,0 +1,38 @@
+<!-- templates/configuracoes.html -->
+{% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configuracoes.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div id="corpo_config" class="container mt-4">
+        <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
+        <h2>Configurações da Conta</h2>
+        <form class="container" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+            {{ form.nome.label }} {{ form.nome(class="form-control") }}
+            </div>
+            <div class="form-group">
+            {{ form.sobreNome.label }} {{ form.sobreNome(class="form-control") }}
+            </div>
+            <div class="form-group">
+            {{ form.status.label }} {{ form.status(class="form-control") }}
+            </div>
+            <div class="form-group">
+            {{ form.email.label }} {{ form.email(class="form-control") }}
+            </div>
+            <div class="form-group">
+            {{ form.imagem.label }} {{ form.imagem(class="form-control-file") }}
+            </div>
+            <div class="form-group">
+            {{ form.cor_fundo.label }} {{ form.cor_fundo(class="form-control", placeholder="#ffffff ou deixe em branco para cores originais") }}
+            </div>
+            <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+        </form>
+    </div>
+
+{% endblock %}

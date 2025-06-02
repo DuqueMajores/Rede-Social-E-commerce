@@ -25,16 +25,14 @@
                 >
                 <div id="info_seguidores">
                     <h5 class="mb-0">{{ seguidor.nome }} {{ seguidor.sobreNome }}</h5>
-                    <p class="mb-0">{{ seguidor.email }}</p>
+                    <p class="mb-0">{{ seguidor.status }}</p>
                 </div>
             </div>
 
             {% if seguidor.id != current_user.id %}
                 {% if seguidor.id not in ids_que_eu_sigo %}
-                    <!-- Botão para seguir -->
-                    <form action="{{ url_for('seguir_usuario', id=seguidor.id) }}" method="post">
-                        <button type="submit" class="btn btn-success seguir-btn" data-id="{{ seguidor.id }}">Seguir</button>
-                    </form>
+                    <!-- Botão para seguir com AJAX -->
+                    <button class="btn btn-success seguir-btn" data-id="{{ seguidor.id }}">Seguir</button>
                 {% else %}
                     <!-- Botão para visualizar o perfil -->
                     <a href="{{ url_for('home', id=seguidor.id) }}" class="btn btn-outline-primary">Ver Perfil</a>

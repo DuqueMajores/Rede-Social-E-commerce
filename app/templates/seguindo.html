@@ -13,7 +13,7 @@
         </div>
         <div class="">
             <h3>{{ obj.nome }} {{ obj.sobreNome }}</h3>
-            <p>{{ obj.email }}</p>
+            <p>{{ obj.status }}</p>
             <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
         </div>
     </div>
@@ -33,7 +33,8 @@
                             <img src="{{ url_for('static', filename='imagens/' + usuario.imagem) }}" alt="Imagem do Usuário" class="rounded-circle me-3" width="60" height="60">
                             <div id="info_seguindo">
                                 <h5 class="card-title mb-0">{{ usuario.nome }} {{ usuario.sobreNome }}</h5>
-                                <p class="card-text"><small>{{ usuario.email }}</small></p>
+                                <p class="card-text"><small>{{ usuario.status }} </small></p>
+                                <div id="status-indicador" class="{% if usuario.last_seen and usuario.is_online() %}online{% else %}offline{% endif %}"></div>
                             </div>
                         </div>
                         {% if usuario.id != current_user.id %}
@@ -44,6 +45,7 @@
                                             class="btn btn-sm {% if usuario.id in context.usuario_atual_seguindo_ids %}btn-danger{% else %}btn-primary{% endif %}">
                                         {% if usuario.id in context.usuario_atual_seguindo_ids %}Deixar de seguir{% else %}Seguir{% endif %}
                                     </button>
+                                    <a href="{{ url_for('home', id=usuario.id) }}" class="btn btn-info">Perfil</a>
                                 </form>
                             </div>
                         {% endif %}
