@@ -8,10 +8,10 @@
 {% block content %}
 <div id="corpo_seguindo" class="container mt-5">
     <div id="titulo_seguindo" class="row mb-4 align-items-center">
-        <div class="">
-            <img id="img_seguindo_1" class="img-fluid rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil">
+        <div>
+            <img id="img_seguindo_1" class="img-fluid rounded-circle" src="{{ url_for('static', filename='imagens/' + obj.imagem) }}" alt="Foto Perfil" width="80" height="80">
         </div>
-        <div class="">
+        <div class="ms-3">
             <h3>{{ obj.nome }} {{ obj.sobreNome }}</h3>
             <p>{{ obj.status }}</p>
             <a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm">Voltar ao perfil</a>
@@ -19,7 +19,7 @@
     </div>
 
     <form method="get" class="mb-4">
-        <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por perfis que {{obj.nome}} segue..." value="{{ request.args.get('pesquisa', '') }}">
+        <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por perfis que {{ obj.nome }} segue..." value="{{ request.args.get('pesquisa', '') }}">
     </form>
 
     {% if not context.dados %}
@@ -27,35 +27,34 @@
     {% else %}
         <div class="row">
             {% for usuario in context.dados %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div id="card_conteudo_seguindo" class="card-body d-flex align-items-center">
-                            <img src="{{ url_for('static', filename='imagens/' + usuario.imagem) }}" alt="Imagem do Usuário" class="rounded-circle me-3" width="60" height="60">
-                            <div id="info_seguindo">
-                                <h5 class="card-title mb-0">{{ usuario.nome }} {{ usuario.sobreNome }}</h5>
-                                <p class="card-text"><small>{{ usuario.status }} </small></p>
-                                <div id="status-indicador" class="{% if usuario.last_seen and usuario.is_online() %}online{% else %}offline{% endif %}"></div>
-                            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div id="card_conteudo_seguindo" class="card-body d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='imagens/' + usuario.imagem) }}" alt="Imagem do Usuário" class="rounded-circle me-3" width="60" height="60">
+                        <div id="info_seguindo" class="flex-grow-1">
+                            <h5 class="card-title mb-0">{{ usuario.nome }} {{ usuario.sobreNome }}</h5>
+                            <p class="card-text"><small>{{ usuario.status }}</small></p>
+                            <div id="status-indicador" class="{% if usuario.last_seen and usuario.is_online() %}online{% else %}offline{% endif %}"></div>
                         </div>
-                        {% if usuario.id != current_user.id %}
-                            <div class="card-footer text-center">
-                                <form class="follow-toggle-form" data-user-id="{{ usuario.id }}"
-                                    data-action="{% if usuario.id in context.usuario_atual_seguindo_ids %}deixar_de_seguir{% else %}seguir{% endif %}">
-                                    <button type="submit"
-                                            class="btn btn-sm {% if usuario.id in context.usuario_atual_seguindo_ids %}btn-danger{% else %}btn-primary{% endif %}">
-                                        {% if usuario.id in context.usuario_atual_seguindo_ids %}Deixar de seguir{% else %}Seguir{% endif %}
-                                    </button>
-                                    <a href="{{ url_for('home', id=usuario.id) }}" class="btn btn-info">Perfil</a>
-                                </form>
-                            </div>
-                        {% endif %}
                     </div>
+                    {% if usuario.id != current_user.id %}
+                    <div class="card-footer text-center">
+                        <form class="follow-toggle-form d-inline" data-user-id="{{ usuario.id }}"
+                              data-action="{% if usuario.id in context.usuario_atual_seguindo_ids %}deixar_de_seguir{% else %}seguir{% endif %}">
+                            <button type="submit"
+                                    class="btn btn-sm {% if usuario.id in context.usuario_atual_seguindo_ids %}btn-danger{% else %}btn-primary{% endif %}">
+                                {% if usuario.id in context.usuario_atual_seguindo_ids %}Deixar de seguir{% else %}Seguir{% endif %}
+                            </button>
+                        </form>
+                        <a href="{{ url_for('home', id=usuario.id) }}" class="btn btn-info btn-sm ms-2">Perfil</a>
+                    </div>
+                    {% endif %}
                 </div>
+            </div>
             {% endfor %}
         </div>
     {% endif %}
 </div>
 
-<script src="{{url_for('static', filename='js/seguindo.js')}}"></script>
-
+<script src="{{ url_for('static', filename='js/seguindo.js') }}"></script>
 {% endblock %}

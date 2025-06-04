@@ -1,90 +1,61 @@
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.seguir-btn').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            const userId = this.getAttribute('data-id');
-            const botaoAtual = this;
-
-            fetch(`/seguir/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'seguido') {
-                    // Substituir o botão pelo link "Ver Perfil"
-                    const linkPerfil = document.createElement('a');
-                    linkPerfil.href = `/home/${userId}`;
-                    linkPerfil.className = 'btn btn-outline-primary';
-                    linkPerfil.textContent = 'Ver Perfil';
-
-                    botaoAtual.replaceWith(linkPerfil);
-
-                    // Atualizar pin de notificações
-                    atualizarPinNotificacoes();
-                }
-            })
-            .catch(error => console.error('Erro ao seguir usuário:', error));
-        });
-    });
-});
-
-function atualizarPinNotificacoes() {
-    fetch('/verificar_novas_notificacoes', {
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.temNovas) {
-            const pin = document.getElementById('pin-notificacoes');
-            if(pin) {
-                pin.style.display = 'inline-block'; // Exibe o pin
-                // Opcional: atualizar contador ou animar o pin
-            }
+function atualizarPaginaPreservandoScroll() {
+    // Salvar posição atual do scroll no sessionStorage
+    sessionStorage.setItem('scrollPos', window.scrollY);
+  
+    // Recarregar a página
+    location.reload();
+  }
+  
+  // Ao carregar a página, restaurar a posição do scroll
+  window.addEventListener('load', () => {
+    const scrollPos = sessionStorage.getItem('scrollPos');
+    if (scrollPos) {
+      window.scrollTo(0, parseInt(scrollPos, 10));
+      sessionStorage.removeItem('scrollPos');
+    }
+  });
+  
+  document.addEventListener('click', function (e) {
+    const btn = e.target;
+  
+    // Verifica se clicou em um botão de seguir ou deixar de seguir
+    if (btn.classList.contains('seguir-btn') || btn.classList.contains('deixar-seguir-btn')) {
+      const userId = btn.getAttribute('data-id');
+      const isSeguir = btn.classList.contains('seguir-btn');
+      const url = isSeguir ? `/follow/${userId}` : `/unfollow/${userId}`;
+      const novaClasse = isSeguir ? 'deixar-seguir-btn' : 'seguir-btn';
+      const removerClasse = isSeguir ? 'seguir-btn' : 'deixar-seguir-btn';
+      const novaCor = isSeguir ? 'btn-danger' : 'btn-success';
+      const corAntiga = isSeguir ? 'btn-success' : 'btn-danger';
+      const novoTexto = isSeguir ? 'Deixar de seguir' : 'Seguir';
+  
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify({})
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          btn.classList.remove(removerClasse, corAntiga);
+          btn.classList.add(novaClasse, novaCor);
+          btn.textContent = novoTexto;
+  
+          // Se quiser recarregar a página após o sucesso, preserve o scroll
+          // atualizarPaginaPreservandoScroll();
+        } else {
+          alert(`Erro ao ${isSeguir ? 'seguir' : 'deixar de seguir'}`);
         }
-    })
-    .catch(error => console.error('Erro ao atualizar notificações:', error));
-}
-
-document.querySelectorAll('.seguir-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const userId = this.getAttribute('data-id');
-        fetch(`/seguir/${userId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken()  // se você usa CSRF token no Flask
-            },
-            body: JSON.stringify({})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Pode desabilitar o botão ou trocar o texto para "Seguindo"
-                this.textContent = 'Seguindo';
-                this.disabled = true;
-
-                // Opcional: enviar evento para atualizar notificações (ex: via WebSocket, SSE ou polling)
-                atualizarNotificacoes();
-            } else {
-                alert(data.error);
-            }
-        })
-        .catch(error => console.error('Erro:', error));
-    });
-});
-
-function getCSRFToken() {
-    // Exemplo simples: pegar token do cookie ou do meta tag
-    return document.querySelector('meta[name=csrf-token]').getAttribute('content');
-}
-
-// Função que atualizaria notificações, exemplo polling ou atualização manual
-function atualizarNotificacoes() {
-    // Pode ser uma chamada fetch para /notificacoes endpoint para atualizar a lista em home.html
-}
+      })
+      atualizarPaginaPreservandoScroll()
+    }
+  });
+  
+  function getCSRFToken() {
+    return document.querySelector('meta[name=csrf-token]')?.getAttribute('content') || '';
+  }
+  

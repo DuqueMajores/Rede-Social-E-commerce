@@ -12,10 +12,7 @@
         <header id="header_home" class="mt-4">
             {% if obj.id == current_user.id %}
             <div id="pin">
-                <a id="pin_btn" class="icone-notificacao {% if tem_notificacao %}notificado{% endif %}"
-                    title="Notificações">
-                    ✉️
-                </a>
+                <a id="pin_btn">✉️</a>
             </div>
             {% endif %}
             <div id="status-indicador" class="{% if obj.is_online() %}online{% else %}offline{% endif %}"></div>
@@ -47,7 +44,7 @@
                     <a href="{{ url_for('loja') }}">Loja</a>
                     <a href="#">Favoritos</a>
                     <a href="#">Grupos</a>
-                    <a href="#">Mensagem</a>
+                    <a href="{{ url_for('mensagens', usuario_id=usuario.id) }}" class="btn-link-style">Mensagem</a>
                     {% if obj.id != current_user.id %}
                     <a id="a_home" href="{{ url_for('home', id=current_user.id) }}">Home</a>
                     {% endif %}
@@ -68,15 +65,20 @@
             {% if obj.id == current_user.id %}
             <div id="notificacoes_container">
                 {% for notificacao in notificacoes %}
-                <div id="notificacao" class="notificacao {% if not notificacao.lida %}nao-lida{% endif %}"
-                    data-id="{{ notificacao.id }}">
-                    <span class="icon_star_home">&#9733;</span>{{ notificacao.mensagem }}
+                <div id="notificacao" class="notificacao {% if not notificacao.lida %}nao-lida{% endif %}" data-id="{{ notificacao.id }}">
+                    <span class="icon_star_home">&#9733;</span>
+                    {% if notificacao.remetente %}
+                        <strong>{{ notificacao.remetente.nome }}</strong>: {{ notificacao.mensagem }}
+                    {% else %}
+                        {{ notificacao.mensagem }}
+                    {% endif %}
                 </div>
                 {% else %}
                 <p>Não há notificações.</p>
                 {% endfor %}
             </div>
             {% endif %}
+
             {% if context.busca %}
             {% if not context.dados %}
             <p>Nenhum resultado encontrado.</p>

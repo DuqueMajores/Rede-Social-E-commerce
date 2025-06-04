@@ -1,3 +1,20 @@
+function atualizarPaginaPreservandoScroll() {
+    // Salvar posição atual do scroll no localStorage ou sessionStorage
+    sessionStorage.setItem('scrollPos', window.scrollY);
+  
+    // Recarregar a página
+    location.reload();
+  }
+  
+  // Ao carregar a página, restaurar a posição do scroll
+  window.addEventListener('load', () => {
+    const scrollPos = sessionStorage.getItem('scrollPos');
+    if (scrollPos) {
+      window.scrollTo(0, parseInt(scrollPos));
+      sessionStorage.removeItem('scrollPos');
+    }
+  });
+
 document.addEventListener("DOMContentLoaded", function () {
     const forms = document.querySelectorAll(".follow-toggle-form");
 
@@ -30,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.querySelector('button').classList.add('btn-primary');
                 }
             })
-            .catch(error => console.error("Erro ao seguir/deixar de seguir:", error));
+            atualizarPaginaPreservandoScroll()
         });
     });
 });

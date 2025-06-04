@@ -25,11 +25,9 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'  # Rota onde o usuário será redirecionado se não estiver logado
 
-from app.models import User
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-from app.views import index 
 from app.models import User
+from app.views import index 

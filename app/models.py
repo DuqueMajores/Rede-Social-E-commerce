@@ -2,76 +2,93 @@ from app import db
 from datetime import datetime, timedelta
 from flask_login import UserMixin
 
-# Tabela de associação (auto-relacionamento N:N)
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(150))
-    sobreNome = db.Column(db.String(150))
-    status = db.Column(db.String(150))
-    cpf_cnpj = db.Column(db.String(20), nullable=False, unique=True)
-    email = db.Column(db.String(150), unique=True)
-    senha = db.Column(db.String(150))
+    nome = db.Column(db.String(150), nullable=False)
+    sobreNome = db.Column(db.String(150), nullable=True)
+    status = db.Column(db.String(150), nullable=True)
+    cpf_cnpj = db.Column(db.String(20), unique=True, nullable=True)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    senha = db.Column(db.String(150), nullable=False)
     imagem = db.Column(db.String(150), default='default.png')
     cor_fundo = db.Column(db.String(255), default='background-image: linear-gradient(to right, #fff, #a6e3ed);')
-    notificacoes = db.relationship('Notificacao', backref='usuario', lazy='dynamic')
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Usuários que este usuário segue
-    seguindo = db.relationship(
+    notificacoes = db.relationship(
+        'Notificacao',
+        backref='destinatario',
+        lazy='dynamic',
+        foreign_keys='Notificacao.destinatario_id'
+    )
+
+    notificacoes_enviadas = db.relationship(
+        'Notificacao',
+        backref='remetente',
+        lazy='dynamic',
+        foreign_keys='Notificacao.remetente_id'
+    )
+
+    followed = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('seguidores', lazy='dynamic'),
+        backref=db.backref('followers', lazy='dynamic'),
         lazy='dynamic'
     )
 
-    # Relacionamento com notificações
-    notificacoes = db.relationship('Notificacao', backref='dono', lazy='dynamic')
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
 
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
 
-    def seguir(self, usuario):
-        if not self.esta_seguindo(usuario):
-            self.seguindo.append(usuario)
-
-    def deixar_de_seguir(self, usuario):
-        if self.esta_seguindo(usuario):
-            self.seguindo.remove(usuario)
-
-    def esta_seguindo(self, usuario):
-        return self.seguindo.filter(followers.c.followed_id == usuario.id).count() > 0
+    def is_following(self, user):
+        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
     def total_seguidores(self):
-        return self.seguidores.count()
+        return self.followers.count()
 
     def total_seguindo(self):
-        return self.seguindo.count()
-    
-    def is_following(self, usuario):
-        return self.esta_seguindo(usuario)
-
-    def follow(self, usuario):
-        self.seguir(usuario)
-
-    def unfollow(self, usuario):
-        self.deixar_de_seguir(usuario)
+        return self.followed.count()
 
     def is_online(self):
-        if self.last_seen is None:
-            return False
-        return datetime.utcnow() - self.last_seen < timedelta(minutes=0.10)
-
+        if self.last_seen:
+            return datetime.utcnow() - self.last_seen < timedelta(minutes=0.10)
+        return False
 
 class Notificacao(db.Model):
+    __tablename__ = 'notificacao'
+
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    mensagem = db.Column(db.Text, nullable=False)
+    destinatario_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    remetente_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    mensagem = db.Column(db.String(255))
     lida = db.Column(db.Boolean, default=False)
     criada_em = db.Column(db.DateTime, default=datetime.utcnow)
+    tipo = db.Column(db.String(50))
 
+    
 
+class Mensagem(db.Model):
+    __tablename__ = 'mensagem'
+
+    id = db.Column(db.Integer, primary_key=True)
+    remetente_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    destinatario_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    corpo = db.Column(db.Text, nullable=False)
+    data_envio = db.Column(db.DateTime, default=datetime.utcnow)
+    editada = db.Column(db.Boolean, default=False)
+    lida = db.Column(db.Boolean, default=False)
+
+    remetente = db.relationship('User', foreign_keys=[remetente_id], backref='mensagens_enviadas')
+    destinatario = db.relationship('User', foreign_keys=[destinatario_id], backref='mensagens_recebidas')
 

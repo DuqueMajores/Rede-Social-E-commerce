@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mensagens.css') }}">
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('home', id=obj.id) }}" class="btn btn-outline-secondary btn-sm mt-2">Voltar ao perfil</a>
+
+<div class="chat-container mt-3">
+    <!-- Barra lateral com usuários -->
+    <div class="chat-sidebar">
+        <!-- Input para pesquisa de usuários -->
+        <input type="text" id="searchUserInput" placeholder="Pesquisar usuário..." class="form-control mb-3" />
+    
+        {% for user in usuarios %}
+            {% if user.id != current_user.id and 
+                (user in current_user.followed or
+                mensagens|selectattr('remetente_id', 'equalto', user.id)|list or
+                mensagens|selectattr('destinatario_id', 'equalto', user.id)|list) %}
+                <div id="chat_user" class="chat-user-wrapper" data-username="{{ (user.nome + ' ' + (user.sobreNome if user.sobreNome else '')).lower() }}">
+
+                    <a id="perfil_chat" href="{{ url_for('mensagens', usuario_id=user.id) }}"
+                       class="chat-user {% if user.tem_nova_mensagem %}new-message{% endif %}">
+                        <div>
+                            <img id="img_msg_perfil" class="rounded-circle"
+                                 src="{{ url_for('static', filename='imagens/' + user.imagem) }}" alt="Foto do Perfil">
+                        </div>
+                        <div class="chat-user-info">
+                            <div id="info_perfil_msg_nome" class="chat-user-name">{{ user.nome }} {{ user.sobreNome }}</div>
+                            <div id="info_perfil_msg_status" class="chat-user-status">{{ user.status }}</div>
+                        </div>
+                    </a>
+                    <div id="btns_msg_config">
+                        <form action="{{ url_for('excluir_mensagens_usuario', usuario_id=user.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" title="Apagar todas as mensagens">
+                                <img id="img_ld_msg" src="{{url_for('static', filename='img/limpar_dados.png')}}" alt="">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Área de conversas -->
+    <div class="chat-content {% if not destinatario %}blank{% endif %}">
+        {% if destinatario and destinatario.id != obj.id %}
+        <h4>{{ destinatario.nome }} {{ destinatario.sobreNome }}</h4>
+
+            <div id="corpo_msg" class="chat-messages">
+                {% for msg in mensagens %}
+                    <div class="chat-message {{ 'sent' if msg.remetente_id == current_user.id else 'received' }}">
+                        <div class="message-author">
+                            <strong>{{ 'Você' if msg.remetente_id == current_user.id else destinatario.nome }}:</strong>
+                        </div>
+                        <div class="message-body">
+                            {{ msg.corpo }}
+                            {% if msg.editada %}
+                                <span class="editada-tag">(editada)</span>
+                            {% endif %}
+                        </div>
+                        <div class="message-time">
+                            <small>{{ msg.data_envio.strftime('%d/%m/%Y %H:%M') }}</small>
+                        </div>
+
+                        {% if msg.remetente_id == current_user.id %}
+                            <div class="message-actions">
+                                <form action="{{ url_for('editar_mensagem', mensagem_id=msg.id) }}" method="POST" class="d-inline">
+                                    <input type="text" name="novo_texto" placeholder="Editar mensagem..." required>
+                                    <button type="submit">Editar</button>
+                                </form>
+                                <form action="{{ url_for('excluir_mensagem', mensagem_id=msg.id) }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn-excluir">Excluir</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <form method="POST" class="chat-form">
+                <textarea name="mensagem" placeholder="Digite sua mensagem aqui..." required></textarea>
+                <button type="submit" title="Enviar mensagem">Enviar</button>
+            </form>
+        {% else %}
+            <div class="chat-placeholder">
+                <p>Selecione um usuário para iniciar uma conversa.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/mensagens.js') }}"></script>
+
+{% endblock %}
+

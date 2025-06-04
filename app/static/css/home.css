@@ -47,10 +47,6 @@ body {
     border-radius: 50%;
 }
 
-#pin_btn.notificado {
-    background-color: #138496;
-}
-
 #notificacoes_container {
     display: none;
     color: black;
@@ -305,11 +301,6 @@ body {
     height: 80px;
 }
 
-#icon_star_home{
-    font-size:24px; 
-    color: gold;
-    
-}
 
 @media screen and (max-width: 760px){
 

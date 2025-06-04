@@ -4,6 +4,13 @@
     margin: 0 auto;
 }
 
+#btn_perfil_seg{
+    display: flex;
+    align-items: center;
+    gap: 5px;        
+
+}
+
 #corpo_seguidores h2 {
     margin-bottom: 70px;
     text-align: center;
