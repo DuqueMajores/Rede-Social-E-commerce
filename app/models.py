@@ -1,6 +1,7 @@
 from app import db
 from datetime import datetime, timedelta
 from flask_login import UserMixin
+from sqlalchemy import ForeignKeyConstraint
 
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -75,6 +76,7 @@ class Notificacao(db.Model):
     lida = db.Column(db.Boolean, default=False)
     criada_em = db.Column(db.DateTime, default=datetime.utcnow)
     tipo = db.Column(db.String(50))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     
 

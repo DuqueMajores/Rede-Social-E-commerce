@@ -1,6 +1,6 @@
 from app import app, db
 from datetime import datetime
-from flask import render_template, url_for, request, redirect, flash, jsonify, copy_current_request_context, abort
+from flask import render_template, url_for, request, redirect, flash, jsonify, copy_current_request_context, abort, session
 from flask_login import login_required, login_user, logout_user, current_user
 from app.forms import UserForm, LoginForm, ConfiguracoesForm
 from app.models import User, Notificacao, Mensagem
@@ -12,6 +12,7 @@ import threading
 import time
 from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
+
 
 ### INDEX
 @app.route('/')
@@ -420,6 +421,8 @@ def mensagens(usuario_id):
     # Verifica se o usuário segue o destinatario
     usuarios_seguidos = current_user.followed.all()
 
+    segue_voce = current_user in destinatario.followed
+
     if request.method == 'POST':
         corpo = request.form.get('mensagem', '').strip()
         if corpo:
@@ -456,7 +459,7 @@ def mensagens(usuario_id):
     return render_template(
         'mensagens.html',
         destinatario=destinatario,
-        usuarios_seguidos=usuarios_seguidos,
+        usuarios_seguidos=usuarios_seguidos, segue_voce=segue_voce,
         mensagens=mensagens,
         usuarios=usuarios,
         obj=current_user,
@@ -552,5 +555,4 @@ def excluir_mensagens_usuario(usuario_id):
 
     flash(f'Todas as mensagens do chat com {usuario.nome} foram apagadas.', 'success')
     return redirect(url_for('mensagens', usuario_id=usuario.id))
-
 

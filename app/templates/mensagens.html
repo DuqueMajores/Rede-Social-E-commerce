@@ -13,19 +13,19 @@
     <div class="chat-sidebar">
         <!-- Input para pesquisa de usuários -->
         <input type="text" id="searchUserInput" placeholder="Pesquisar usuário..." class="form-control mb-3" />
-    
-        {% for user in usuarios %}
-            {% if user.id != current_user.id and 
-                (user in current_user.followed or
-                mensagens|selectattr('remetente_id', 'equalto', user.id)|list or
-                mensagens|selectattr('destinatario_id', 'equalto', user.id)|list) %}
-                <div id="chat_user" class="chat-user-wrapper" data-username="{{ (user.nome + ' ' + (user.sobreNome if user.sobreNome else '')).lower() }}">
 
+        {% for user in usuarios %}
+            {% if user.id != current_user.id and
+                (user in current_user.followed or
+                 mensagens|selectattr('remetente_id', 'equalto', user.id)|list or
+                 mensagens|selectattr('destinatario_id', 'equalto', user.id)|list) %}
+                <div id="chat_user" class="chat-user-wrapper"
+                    data-username="{{ (user.nome + ' ' + (user.sobreNome if user.sobreNome else '')).lower() }}">
                     <a id="perfil_chat" href="{{ url_for('mensagens', usuario_id=user.id) }}"
-                       class="chat-user {% if user.tem_nova_mensagem %}new-message{% endif %}">
+                        class="chat-user {% if user.tem_nova_mensagem %}new-message{% endif %}">
                         <div>
                             <img id="img_msg_perfil" class="rounded-circle"
-                                 src="{{ url_for('static', filename='imagens/' + user.imagem) }}" alt="Foto do Perfil">
+                                src="{{ url_for('static', filename='imagens/' + user.imagem) }}" alt="Foto do Perfil">
                         </div>
                         <div class="chat-user-info">
                             <div id="info_perfil_msg_nome" class="chat-user-name">{{ user.nome }} {{ user.sobreNome }}</div>
@@ -35,7 +35,7 @@
                     <div id="btns_msg_config">
                         <form action="{{ url_for('excluir_mensagens_usuario', usuario_id=user.id) }}" method="POST" class="d-inline">
                             <button type="submit" class="btn btn-sm btn-danger" title="Apagar todas as mensagens">
-                                <img id="img_ld_msg" src="{{url_for('static', filename='img/limpar_dados.png')}}" alt="">
+                                <img id="img_ld_msg" src="{{ url_for('static', filename='img/limpar_dados.png') }}" alt="">
                             </button>
                         </form>
                     </div>
@@ -47,7 +47,7 @@
     <!-- Área de conversas -->
     <div class="chat-content {% if not destinatario %}blank{% endif %}">
         {% if destinatario and destinatario.id != obj.id %}
-        <h4>{{ destinatario.nome }} {{ destinatario.sobreNome }}</h4>
+            <h4>{{ destinatario.nome }} {{ destinatario.sobreNome }}</h4>
 
             <div id="corpo_msg" class="chat-messages">
                 {% for msg in mensagens %}
@@ -66,15 +66,20 @@
                         </div>
 
                         {% if msg.remetente_id == current_user.id %}
-                            <div class="message-actions">
-                                <form action="{{ url_for('editar_mensagem', mensagem_id=msg.id) }}" method="POST" class="d-inline">
-                                    <input type="text" name="novo_texto" placeholder="Editar mensagem..." required>
-                                    <button type="submit">Editar</button>
-                                </form>
-                                <form action="{{ url_for('excluir_mensagem', mensagem_id=msg.id) }}" method="POST" class="d-inline">
-                                    <button type="submit" class="btn-excluir">Excluir</button>
-                                </form>
+                        <div class="message-options">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" onclick="toggleDropdown(this)">⋮</button>
+                                <div class="dropdown-menu">
+                                    <form action="{{ url_for('editar_mensagem', mensagem_id=msg.id) }}" method="POST">
+                                        <input type="text" name="novo_texto" placeholder="Editar mensagem..." required>
+                                        <button id="btn_edit" type="submit">Editar</button>
+                                    </form>
+                                    <form action="{{ url_for('excluir_mensagem', mensagem_id=msg.id) }}" method="POST">
+                                        <button id="btn_ex" type="submit" class="btn bg-danger btn-excluir ">Excluir</button>
+                                    </form>
+                                </div>
                             </div>
+                        </div>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -86,7 +91,7 @@
             </form>
         {% else %}
             <div class="chat-placeholder">
-                <p>Selecione um usuário para iniciar uma conversa.</p>
+                <p>Conversas restritas a usuários que você segue</p>
             </div>
         {% endif %}
     </div>
@@ -95,4 +100,3 @@
 <script src="{{ url_for('static', filename='js/mensagens.js') }}"></script>
 
 {% endblock %}
-
